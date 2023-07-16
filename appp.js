@@ -23,7 +23,7 @@ const articalSchema = {
 }
 
 const Article = mongoose.model("Article",articalSchema);
-
+////////////////////////////////all articles ////////
 app.route("/articles")
 
 //requesting all data on articles
@@ -57,6 +57,28 @@ app.route("/articles")
 // app.post("/articles",);
 
 // app.delete("/articles",);
+
+////////////////////////////specific articles////////
+
+//////////////////////:<var name >which late will be assigned
+app.route("/articles/:articleTitle")
+
+.get((req,res)=>{
+    Article.findOne({title: req.params.articleTitle}).then((found)=>{res.send(found)}).catch((err)=>{console.error(err)});
+})
+.put((req,res)=>{
+   Article.replaceOne(
+    {title:req.params.articleTitle},
+    {title:req.body.title,content:req.body.content}).then((found)=>{res.send(found)}).catch((err)=>{console.error(err)});
+    
+})
+// .patch((req,res)=>{
+    
+// })
+.delete((req,res)=>{
+    var item = Article.findOne({title: req.params.articleTitle})
+    Article.findOneAndDelete(item).then((found)=>{res.send("Deleteed success")}).catch((err)=>{console.error(err)});
+})
 
 
 app.listen(3000, function() {
