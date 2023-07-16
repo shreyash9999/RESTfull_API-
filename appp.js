@@ -14,8 +14,22 @@ app.get("/", function(req, res) {
     res.send("oo its up!");
 });
 
+mongoose.connect("mongodb://127.0.0.1:27017/db",{useNewUrlParser:true}).then(()=>{console.log("connected success")}).catch((err)=>{console.error(err)});
 
 
+const articalSchema = {
+    title:"string",
+    content : "string"
+}
+
+const Article = mongoose.model("Article",articalSchema);
+
+app.get("/articles",(req,res)=>{
+    Article.find().then((foundArt)=>{
+        //console.log(foundArt)
+        res.send(foundArt);
+    }).catch((err)=>{console.error(err)})
+})
 
 
 
