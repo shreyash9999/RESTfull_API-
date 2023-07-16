@@ -24,15 +24,39 @@ const articalSchema = {
 
 const Article = mongoose.model("Article",articalSchema);
 
-app.get("/articles",(req,res)=>{
+app.route("/articles")
+
+//requesting all data on articles
+.get((req,res)=>{
     Article.find().then((foundArt)=>{
         //console.log(foundArt)
         res.send(foundArt);
     }).catch((err)=>{console.error(err)})
-})
+    }).post((req,res)=>{
+    // console.log(req.body.title)
+    // console.log(req.body.content)
 
+    //add new data and using thunderbod to send the data
+    const newArticle = new Article({
+        title:req.body.title,
+        content:req.body.content
+    });
+    newArticle.save().then(()=>{
+        console.log("saved successfully")
+    }).catch((err)=>{console.error(err)});
+    })
 
+.delete((req,res) =>{
+    Article.deleteMany().then(()=>{
+        res.send("deleted all articles");
+    }).catch((err)=>{res.send(err)});
+    });
 
+// app.get("/articles",)
+
+// app.post("/articles",);
+
+// app.delete("/articles",);
 
 
 app.listen(3000, function() {
